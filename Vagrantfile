@@ -22,7 +22,7 @@ Vagrant.configure("2") do |config|
         sudo pip install xmltodict
         sudo apt-get install tree -y
     "
-    config.vm.provision "file", source: "config", destination: "~/ansible"
+    control.vm.provision "file", source: "config", destination: "~/ansible"
   end
 
   config.vm.define "web01" do |web01|
