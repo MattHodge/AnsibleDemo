@@ -1,0 +1,10 @@
+---
+- name: ensure nodejs installed
+  win_chocolatey:
+    name: nodejs.install
+    state: present
+
+- name: create matthew user
+  win_user:
+    name: matthew
+    password: P@SSW0rd!
