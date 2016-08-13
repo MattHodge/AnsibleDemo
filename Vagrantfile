@@ -21,20 +21,25 @@ Vagrant.configure("2") do |config|
         sudo pip install pywinrm
         sudo pip install xmltodict
         sudo apt-get install tree -y
+        sudo apt-get install git -y
     "
     control.vm.provision "file", source: "config", destination: "~/ansible"
   end
 
   config.vm.define "web01" do |web01|
-    web01.vm.box = "MattHodge/Win2012R2WMF5Min"
+    # web01.vm.box = "mwrock/Windows2016"
+    web01.vm.box = "jptoto/Windows2012R2"
     web01.vm.hostname = "win-web01"
     web01.vm.communicator = :winrm
     web01.winrm.username = "vagrant"
     web01.winrm.password = "vagrant"
-    web01.vm.network "private_network", type: "dhcp"
+    web01.vm.network "private_network", ip: "172.28.128.10"
     web01.vm.provider "virtualbox" do |vb|
       vb.memory = 2048
       vb.cpus = 2
+    end
+    config.vm.provision :shell do |shell|
+      shell.path = "https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1"
     end
   end
 end
