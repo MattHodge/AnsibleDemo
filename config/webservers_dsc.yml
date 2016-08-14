@@ -1,0 +1,4 @@
+---
+- hosts: web
+  roles:
+    - webserver_dsc

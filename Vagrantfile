@@ -22,6 +22,10 @@ Vagrant.configure("2") do |config|
         sudo pip install xmltodict
         sudo apt-get install tree -y
         sudo apt-get install git -y
+        echo 'export ANSIBLE_LIBRARY=/home/vagrant/thirdparty_modules' >> /home/vagrant/.profile
+        if [ ! -d /home/vagrant/thirdparty_modules/win_dsc ]; then
+          git clone https://github.com/trondhindenes/Ansible-win_dsc.git /home/vagrant/thirdparty_modules/win_dsc
+        fi;
     "
     control.vm.provision "file", source: "config", destination: "~/ansible"
   end
@@ -41,6 +45,13 @@ Vagrant.configure("2") do |config|
     config.vm.provision :shell do |shell|
       shell.path = "https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1"
     end
+    config.vm.provision :shell, inline: "
+    if ($PSVersionTable.PSVersion.Major -eq 4)
+    {
+      choco install powershell 5 -y
+      shutdown /r /t 0
+    }
+    "
   end
 end
 
